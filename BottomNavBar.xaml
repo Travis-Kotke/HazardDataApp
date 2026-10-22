@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentView
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="UWO_Safety_App.BottomNavBar">
+
+    <Grid ColumnDefinitions="*,*,*,*,*"
+          HeightRequest="75"
+          BackgroundColor="White"
+          ColumnSpacing="5"
+          Padding="5">
+
+        <Button Grid.Column="0"
+                Text="Home"
+                BackgroundColor="Transparent"
+                TextColor="Black"
+                Clicked="Home_Clicked"/>
+
+        <Button Grid.Column="1"
+                Text="Info"
+                BackgroundColor="Transparent"
+                TextColor="Black"
+                Clicked="Info_Clicked"/>
+
+        <Button Grid.Column="2"
+                Text="+"
+                FontSize="30"
+                WidthRequest="60"
+                HeightRequest="60"
+                CornerRadius="30"
+                BackgroundColor="#3483FA"
+                TextColor="White"
+                Clicked="Report_Clicked"/>
+
+        <Button Grid.Column="3"
+                Text="Map"
+                BackgroundColor="Transparent"
+                TextColor="Black"
+                Clicked="Map_Clicked"/>
+
+        <Button Grid.Column="4"
+                Text="Back"
+                BackgroundColor="Transparent"
+                TextColor="Black"
+                Clicked="Back_Clicked"/>
+
+    </Grid>
+</ContentView>
