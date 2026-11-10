@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Supabase" Version="8.6.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.8" />
+    <!-- A clean checkout builds with placeholders; local config replaces the example. -->
+    <Compile Remove="SupabaseConfig.example.cs" />
+    <Compile Include="SupabaseConfig.example.cs" Condition="!Exists('SupabaseConfig.cs')" />
+  </ItemGroup>
+</Project>

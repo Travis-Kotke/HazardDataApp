@@ -1,0 +1,62 @@
+# Files created
+
+Source files and copied assets added for the project skeleton (build outputs are ignored):
+
+- `.gitignore`
+- `HazardDataApp.BusinessLogic/DependencyInjection.cs`
+- `HazardDataApp.BusinessLogic/HazardDataApp.BusinessLogic.csproj`
+- `HazardDataApp.BusinessLogic/Models/Article.cs`
+- `HazardDataApp.BusinessLogic/Models/ReportStatistics.cs`
+- `HazardDataApp.BusinessLogic/Services/IReportService.cs`
+- `HazardDataApp.BusinessLogic/Services/ReportService.cs`
+- `HazardDataApp.Database/DependencyInjection.cs`
+- `HazardDataApp.Database/HazardDataApp.Database.csproj`
+- `HazardDataApp.Database/Models/ReportRecord.cs`
+- `HazardDataApp.Database/Repositories/IReportRepository.cs`
+- `HazardDataApp.Database/Repositories/ReportRepository.cs`
+- `HazardDataApp.Database/SupabaseConfig.example.cs`
+- `HazardDataApp.Database/SupabaseConnection.cs`
+- `HazardDataApp.UI/App.xaml`
+- `HazardDataApp.UI/App.xaml.cs`
+- `HazardDataApp.UI/AppShell.xaml`
+- `HazardDataApp.UI/AppShell.xaml.cs`
+- `HazardDataApp.UI/HazardDataApp.UI.csproj`
+- `HazardDataApp.UI/MauiProgram.cs`
+- `HazardDataApp.UI/Platforms/Android/AndroidManifest.xml`
+- `HazardDataApp.UI/Platforms/Android/MainActivity.cs`
+- `HazardDataApp.UI/Platforms/Android/MainApplication.cs`
+- `HazardDataApp.UI/Platforms/Android/Resources/values/colors.xml`
+- `HazardDataApp.UI/Platforms/MacCatalyst/AppDelegate.cs`
+- `HazardDataApp.UI/Platforms/MacCatalyst/Entitlements.plist`
+- `HazardDataApp.UI/Platforms/MacCatalyst/Info.plist`
+- `HazardDataApp.UI/Platforms/MacCatalyst/Program.cs`
+- `HazardDataApp.UI/Platforms/Windows/App.xaml`
+- `HazardDataApp.UI/Platforms/Windows/App.xaml.cs`
+- `HazardDataApp.UI/Platforms/Windows/Package.appxmanifest`
+- `HazardDataApp.UI/Platforms/Windows/app.manifest`
+- `HazardDataApp.UI/Platforms/iOS/AppDelegate.cs`
+- `HazardDataApp.UI/Platforms/iOS/Info.plist`
+- `HazardDataApp.UI/Platforms/iOS/Program.cs`
+- `HazardDataApp.UI/Platforms/iOS/Resources/PrivacyInfo.xcprivacy`
+- `HazardDataApp.UI/Properties/launchSettings.json`
+- `HazardDataApp.UI/Resources/AppIcon/appicon.svg`
+- `HazardDataApp.UI/Resources/AppIcon/appiconfg.svg`
+- `HazardDataApp.UI/Resources/Fonts/OpenSans-Regular.ttf`
+- `HazardDataApp.UI/Resources/Fonts/OpenSans-Semibold.ttf`
+- `HazardDataApp.UI/Resources/Images/campus_map.png`
+- `HazardDataApp.UI/Resources/Images/dumpster_fire.webp`
+- `HazardDataApp.UI/Resources/Raw/AboutAssets.txt`
+- `HazardDataApp.UI/Resources/Splash/splash.svg`
+- `HazardDataApp.UI/Resources/Styles/Colors.xaml`
+- `HazardDataApp.UI/Resources/Styles/Styles.xaml`
+- `HazardDataApp.UI/Views/AddArticlePage.xaml`
+- `HazardDataApp.UI/Views/AddArticlePage.xaml.cs`
+- `HazardDataApp.UI/Views/HomePage.xaml`
+- `HazardDataApp.UI/Views/HomePage.xaml.cs`
+- `HazardDataApp.UI/Views/QuickStatsPage.xaml`
+- `HazardDataApp.UI/Views/QuickStatsPage.xaml.cs`
+- `HazardDataApp.sln`
+- `sql/create_articles.sql`
+- `FILES.md`
+
+Existing file updated: `README.md`. Original root platform and resource files were preserved.
