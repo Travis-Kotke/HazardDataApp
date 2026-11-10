@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="HazardDataApp.UI.Views.AddArticlePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Add Article"
+    BackgroundColor="#F4F4F4">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="TabButtonStyle" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="#E8E8E8" />
+                <Setter Property="TextColor" Value="#333333" />
+                <Setter Property="BorderColor" Value="#777777" />
+                <Setter Property="BorderWidth" Value="1" />
+                <Setter Property="CornerRadius" Value="2" />
+                <Setter Property="Padding" Value="14,7" />
+                <Setter Property="HeightRequest" Value="38" />
+            </Style>
+            <Style x:Key="SelectedTabButtonStyle"
+                   TargetType="Button"
+                   BasedOn="{StaticResource TabButtonStyle}">
+                <Setter Property="BackgroundColor" Value="White" />
+                <Setter Property="FontAttributes" Value="Bold" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid Padding="18"
+          RowDefinitions="Auto,*"
+          RowSpacing="0">
+
+        <!-- Top navigation tabs -->
+        <Grid Grid.Row="0"
+              ColumnDefinitions="Auto,Auto,Auto,*"
+              ColumnSpacing="4"
+              Margin="4,0,0,0">
+            <Button Grid.Column="0"
+                    Text="Home"
+                    Style="{StaticResource TabButtonStyle}"
+                    Clicked="OnHomeClicked" />
+            <Button Grid.Column="1"
+                    Text="Add Article"
+                    Style="{StaticResource SelectedTabButtonStyle}" />
+            <Button Grid.Column="2"
+                    Text="Quick Stats"
+                    Style="{StaticResource TabButtonStyle}"
+                    Clicked="OnQuickStatsClicked" />
+        </Grid>
+
+        <!-- Main content -->
+        <Border Grid.Row="1"
+                BackgroundColor="White"
+                Stroke="#777777"
+                StrokeThickness="1.5"
+                Padding="14"
+                Margin="0"
+                StrokeShape="RoundRectangle 2">
+
+            <Grid ColumnDefinitions="0.95*,1.05*"
+                  ColumnSpacing="18">
+
+                <!-- Article list on the left -->
+                <Grid Grid.Column="0"
+                      RowDefinitions="Auto,*"
+                      RowSpacing="0">
+
+                    <Grid Grid.Row="0"
+                          ColumnDefinitions="1.1*,1.5*"
+                          BackgroundColor="#D8D8D8"
+                          Padding="7,5">
+                        <Label Text="Article Name"
+                               FontAttributes="Bold"
+                               TextColor="#333333"
+                               VerticalOptions="Center" />
+                        <Label Grid.Column="1"
+                               Text="Severity"
+                               FontAttributes="Bold"
+                               TextColor="#333333"
+                               VerticalOptions="Center" />
+                    </Grid>
+
+                    <CollectionView Grid.Row="1"
+                                    ItemsSource="{Binding Articles}"
+                                    SelectionMode="None">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid ColumnDefinitions="1.1*,1.5*"
+                                      Padding="6,5"
+                                      MinimumHeightRequest="42"
+                                      BackgroundColor="{Binding RowColor}">
+                                    <Label Text="{Binding Name}"
+                                           TextColor="#333333"
+                                           VerticalOptions="Center"
+                                           LineBreakMode="TailTruncation" />
+
+                                    <HorizontalStackLayout Grid.Column="1"
+                                                           Spacing="5"
+                                                           VerticalOptions="Center"
+                                                           HorizontalOptions="Start">
+                                        <Button Text="›"
+                                                FontSize="23"
+                                                Padding="0"
+                                                WidthRequest="38"
+                                                HeightRequest="34"
+                                                Clicked="OnOpenArticleClicked"
+                                                CommandParameter="{Binding .}"
+                                                AutomationProperties.Name="Open article" />
+                                        <Button Text="◎"
+                                                FontSize="20"
+                                                Padding="0"
+                                                WidthRequest="38"
+                                                HeightRequest="34"
+                                                Clicked="OnPreviewArticleClicked"
+                                                CommandParameter="{Binding .}"
+                                                AutomationProperties.Name="Preview article" />
+                                        <Button Text="⇩"
+                                                FontSize="21"
+                                                Padding="0"
+                                                WidthRequest="38"
+                                                HeightRequest="34"
+                                                Clicked="OnDownloadArticleClicked"
+                                                CommandParameter="{Binding .}"
+                                                AutomationProperties.Name="Download article" />
+                                        <Button Text="▢"
+                                                FontSize="20"
+                                                Padding="0"
+                                                WidthRequest="38"
+                                                HeightRequest="34"
+                                                Clicked="OnDeleteArticleClicked"
+                                                CommandParameter="{Binding .}"
+                                                AutomationProperties.Name="Delete article" />
+                                    </HorizontalStackLayout>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </Grid>
+
+                <!-- Add article form on the right -->
+                <Grid Grid.Column="1"
+                      RowDefinitions="Auto,Auto,*,Auto"
+                      RowSpacing="10"
+                      Padding="0,8,0,0">
+
+                    <Label Grid.Row="0"
+                           Text="Add Article"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           TextColor="#333333"
+                           VerticalOptions="Center" />
+
+                    <Entry Grid.Row="1"
+                           x:Name="HeaderEntry"
+                           Placeholder="*Header input"
+                           PlaceholderColor="#555555"
+                           TextColor="#222222"
+                           BackgroundColor="White"
+                           HeightRequest="42"
+                           ClearButtonVisibility="WhileEditing">
+                    </Entry>
+
+                    <Editor Grid.Row="2"
+                            x:Name="BodyEditor"
+                            Placeholder="Text input"
+                            PlaceholderColor="#555555"
+                            TextColor="#222222"
+                            BackgroundColor="White"
+                            AutoSize="Disabled"
+                            VerticalOptions="Fill"
+                            />
+
+                    <Button Grid.Row="3"
+                            Text="Add article"
+                            HorizontalOptions="End"
+                            WidthRequest="120"
+                            HeightRequest="42"
+                            Clicked="OnAddArticleClicked"
+                            BackgroundColor="#F7F7F7"
+                            TextColor="#333333"
+                            BorderColor="#777777"
+                            BorderWidth="1.5"
+                            CornerRadius="8" />
+                </Grid>
+            </Grid>
+        </Border>
+    </Grid>
+
+
+</ContentPage>
