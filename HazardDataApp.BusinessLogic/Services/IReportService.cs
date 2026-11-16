@@ -5,4 +5,5 @@ namespace HazardDataApp.BusinessLogic.Services;
 public interface IReportService
 {
     Task<ReportStatistics> GetStatisticsAsync();
+    Task<QuickStatsData> GetQuickStatsAsync();
 }
