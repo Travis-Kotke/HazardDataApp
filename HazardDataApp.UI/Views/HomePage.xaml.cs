@@ -33,6 +33,11 @@ public partial class HomePage : ContentPage
 
     private async void OnRefreshClicked(object? sender, EventArgs e) => await LoadAsync();
 
+    private async void OnExportClicked(object? sender, EventArgs e)
+    {
+        await DisplayActionSheetAsync("Choose an export format", "Cancel", null, "CSV", "Excel");
+    }
+
     private async Task LoadAsync()
     {
         if (busy) return;
