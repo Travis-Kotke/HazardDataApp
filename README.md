@@ -30,15 +30,22 @@ Then remove the demo service registration, `DEMO DATA` badge from
 
 ## Supabase setup
 
+The shared `HazardDataApp.Database/SupabaseConfig.defaults.cs` contains this
+project's public API URL and publishable key. Teammates can pull, build, and run
+without editing a configuration file. These are public client settings; access
+still depends on Supabase policies. Never use a service_role or secret key here.
+
+For an optional local override (for example, a different development project):
+
 1. Copy `HazardDataApp.Database/SupabaseConfig.example.cs` to
    `HazardDataApp.Database/SupabaseConfig.cs` in the same folder.
-2. Set `Url` and `PublishableKey` to the existing project's URL and public
-   publishable (`sb_publishable_...`) or legacy anon key. The real file is ignored
-   by Git. Never put a service_role or secret key in this app.
-3. Without that file, the example is compiled so a clean checkout still builds.
-   Home displays a setup message; Quick Stats continues to show demo data until
-   its page registration is switched to the real report service.
-4. Use the existing `public.reports` schema. Counts include only rows visible to
+2. Replace the placeholders with your alternate URL and publishable/anon key.
+   This local file is ignored by Git and takes precedence over the shared defaults.
+
+Quick Stats continues to show demo data until its page registration is switched
+to the real report service.
+
+Use the existing `public.reports` schema. Counts include only rows visible to
    the current Supabase role through row level security (RLS). Authentication is
    outside this skeleton: if the existing policies require an authenticated admin,
    the team must connect its admin sign-in/session before protected data is visible.
