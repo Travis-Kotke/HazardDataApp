@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="HazardDataApp.UI.Views.HomePage" Title="Home">
+             xmlns:views="clr-namespace:HazardDataApp.UI.Views"
+             x:Class="HazardDataApp.UI.Views.HomePage" Title="Hazards Data App">
     <Grid Padding="20" RowDefinitions="Auto,Auto,*" RowSpacing="12" BackgroundColor="White">
         <Grid ColumnDefinitions="*,Auto">
-            <Label Text="Home" FontSize="28" FontAttributes="Bold" TextColor="#24242B" />
             <Button Grid.Column="1" x:Name="RefreshButton" Text="Refresh" Clicked="OnRefreshClicked" />
         </Grid>
         <Label Grid.Row="1" x:Name="StatusLabel" Text="Load reports to get started." TextColor="#555560" />
@@ -59,9 +59,11 @@
                                 </Border>
                             </VerticalStackLayout>
                             <VerticalStackLayout Spacing="10">
-                                <Grid ColumnDefinitions="24,*" ColumnSpacing="10" MinimumHeightRequest="36">
-                                    <CheckBox x:Name="UseDateRange" CheckedChanged="OnDateRangeChanged" SemanticProperties.Description="Filter by date range" />
-                                    <Label Grid.Column="1" Text="Filter by date range" VerticalOptions="Center" />
+                                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12" MinimumHeightRequest="44">
+                                    <Label Text="Filter by date range" VerticalOptions="Center" />
+                                    <Switch Grid.Column="1" x:Name="UseDateRange" Toggled="OnDateRangeChanged"
+                                            OnColor="#512BD4" HorizontalOptions="End" VerticalOptions="Center"
+                                            SemanticProperties.Description="Filter by date range" />
                                 </Grid>
                                 <Grid x:Name="DatesGrid" RowDefinitions="Auto,Auto" ColumnDefinitions="40,*" RowSpacing="8" ColumnSpacing="8" IsVisible="False" IsEnabled="False">
                                     <Label Text="From" VerticalOptions="Center" />
@@ -92,9 +94,11 @@
                                     <Picker x:Name="ResolutionPicker" SelectedIndexChanged="OnFilterChanged" />
                                 </Border>
                             </VerticalStackLayout>
-                            <Grid ColumnDefinitions="24,*" ColumnSpacing="10" MinimumHeightRequest="36">
-                                <CheckBox x:Name="PublishedCheckBox" CheckedChanged="OnFilterChanged" SemanticProperties.Description="Show public reports only" />
-                                <Label Grid.Column="1" Text="Public reports only" VerticalOptions="Center" />
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12" MinimumHeightRequest="44">
+                                <Label Text="Public reports only" VerticalOptions="Center" />
+                                <Switch Grid.Column="1" x:Name="PublishedSwitch" Toggled="OnFilterChanged"
+                                        OnColor="#512BD4" HorizontalOptions="End" VerticalOptions="Center"
+                                        SemanticProperties.Description="Show public reports only" />
                             </Grid>
                         </VerticalStackLayout>
                     </ScrollView>
@@ -118,7 +122,7 @@
                                     <Label x:Name="EmptyLabel" Text="No reports loaded." Padding="24" TextColor="#555560" />
                                 </CollectionView.EmptyView>
                                 <CollectionView.ItemTemplate>
-                                    <DataTemplate xmlns:views="clr-namespace:HazardDataApp.UI.Views" x:DataType="views:ReportRow">
+                                    <DataTemplate x:DataType="views:ReportRow">
                                         <Grid Padding="14" ColumnDefinitions="*,100,70,170" ColumnSpacing="8" BackgroundColor="{Binding Background}">
                                             <VerticalStackLayout Spacing="4" VerticalOptions="Center">
                                                 <Label Text="{Binding Report.Title}" FontAttributes="Bold" TextColor="#24242B" MaxLines="2" />
@@ -127,13 +131,22 @@
                                             </VerticalStackLayout>
                                             <Label Grid.Column="1" Text="{Binding Report.Severity}" TextColor="{Binding SeverityColor}" VerticalOptions="Center" />
                                             <Label Grid.Column="2" Text="{Binding PublicLabel}" TextColor="#24242B" VerticalOptions="Center" />
-                                            <VerticalStackLayout Grid.Column="3" Spacing="6" VerticalOptions="Center">
-                                                <Grid ColumnDefinitions="*,*" ColumnSpacing="6">
-                                                    <Button Text="{Binding FlagLabel}" Clicked="OnFlagClicked" FontSize="12" Padding="4" BackgroundColor="{Binding FlagColor}" TextColor="White" MinimumHeightRequest="44" />
-                                                    <Button Grid.Column="1" Text="{Binding ResolutionAction}" IsEnabled="False" FontSize="12" Padding="4" MinimumHeightRequest="44" />
-                                                </Grid>
-                                                <Label Text="{Binding StatusLabel}" FontSize="12" TextColor="#666670" />
-                                            </VerticalStackLayout>
+                                            <Grid Grid.Column="3" ColumnDefinitions="Auto,*" ColumnSpacing="10" VerticalOptions="Center">
+                                                <!-- Enable once the is_flagged migration has been applied and verified. -->
+                                                <ImageButton Source="report_flag.png" Clicked="OnFlagClicked" IsEnabled="False"
+                                                             WidthRequest="{OnPlatform Default=44, WinUI=36}" HeightRequest="{OnPlatform Default=44, WinUI=36}"
+                                                             MinimumWidthRequest="0" MinimumHeightRequest="0" Padding="8"
+                                                             CornerRadius="6" BackgroundColor="{Binding FlagColor}"
+                                                             VerticalOptions="Center" HorizontalOptions="Start"
+                                                             ToolTipProperties.Text="{Binding FlagLabel}"
+                                                             SemanticProperties.Description="{Binding FlagLabel}" />
+                                                <VerticalStackLayout Grid.Column="1" Spacing="4">
+                                                    <Label Text="{Binding StatusLabel}" FontSize="13" FontAttributes="Bold" TextColor="#34343E" />
+                                                    <Button Text="{Binding ResolutionAction}" IsEnabled="False" FontSize="12" Padding="8,2"
+                                                            HeightRequest="32" MinimumHeightRequest="0" MinimumWidthRequest="0"
+                                                            BackgroundColor="#EEEAFB" TextColor="#512BD4" CornerRadius="6" />
+                                                </VerticalStackLayout>
+                                            </Grid>
                                         </Grid>
                                     </DataTemplate>
                                 </CollectionView.ItemTemplate>

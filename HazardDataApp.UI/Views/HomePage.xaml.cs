@@ -60,7 +60,7 @@ public partial class HomePage : ContentPage
         if (ready && loaded) ApplyFilters();
     }
 
-    private void OnDateRangeChanged(object? sender, CheckedChangedEventArgs e)
+    private void OnDateRangeChanged(object? sender, ToggledEventArgs e)
     {
         if (!ready) return;
         DatesGrid.IsEnabled = e.Value;
@@ -74,8 +74,8 @@ public partial class HomePage : ContentPage
         TitleEntry.Text = "";
         SeverityPicker.SelectedIndex = 0;
         ResolutionPicker.SelectedIndex = 0;
-        PublishedCheckBox.IsChecked = false;
-        UseDateRange.IsChecked = false;
+        PublishedSwitch.IsToggled = false;
+        UseDateRange.IsToggled = false;
         DatesGrid.IsEnabled = false;
         DatesGrid.IsVisible = false;
         ready = true;
@@ -91,9 +91,9 @@ public partial class HomePage : ContentPage
                 Title = TitleEntry.Text ?? "",
                 Severity = SeverityPicker.SelectedIndex > 0 ? (string)SeverityPicker.SelectedItem : null,
                 IsResolved = ResolutionPicker.SelectedIndex switch { 1 => false, 2 => true, _ => null },
-                PublishedOnly = PublishedCheckBox.IsChecked,
-                FromDate = UseDateRange.IsChecked ? FromDatePicker.Date : null,
-                ToDate = UseDateRange.IsChecked ? ToDatePicker.Date : null
+                PublishedOnly = PublishedSwitch.IsToggled,
+                FromDate = UseDateRange.IsToggled ? FromDatePicker.Date : null,
+                ToDate = UseDateRange.IsToggled ? ToDatePicker.Date : null
             };
             var filtered = filter.Apply(reports);
             ReportsList.ItemsSource = filtered.Select((report, index) => new ReportRow(report, index)).ToList();
@@ -114,7 +114,7 @@ public partial class HomePage : ContentPage
 
     private async void OnFlagClicked(object? sender, EventArgs e)
     {
-        if (busy || sender is not Button { BindingContext: ReportRow row }) return;
+        if (busy || sender is not ImageButton { BindingContext: ReportRow row }) return;
         SetBusy(true);
         StatusLabel.Text = "Saving flag...";
         try

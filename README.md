@@ -81,13 +81,15 @@ dotnet build HazardDataApp.UI/HazardDataApp.UI.csproj -t:Run -f net10.0-windows1
 
 The homepage follows the team's table-and-filter sketch. It loads reports through
 `IReportService`, supports incident-title search, optional inclusive date ranges,
-severity, resolved status, and public-only filtering (`published`). Reports sort
+severity, resolved status, and public-only filtering (`is_published`). Reports sort
 newest first. Clear filters restores all loaded reports; Refresh reloads Supabase.
 The filter panel moves above the horizontally scrollable table on small screens.
 
-Flag/Unflag marks a suspicious report without resolving it. Before using this
-action, run `sql/add_report_flag.sql` to add `is_flagged boolean not null default
-false`. This assumes the team-confirmed `published boolean` column already exists.
+Flag/Unflag is wired to mark a suspicious report without resolving it, but its
+buttons are disabled because the current schema has no flag column. Before
+enabling and testing them, run `sql/add_report_flag.sql` to add
+`is_flagged boolean not null default false`. The existing publication column is
+`is_published boolean`.
 Existing admin SELECT/UPDATE policies must allow the action. Failed writes leave
 the displayed report unchanged; the app does not change policies or run SQL.
 

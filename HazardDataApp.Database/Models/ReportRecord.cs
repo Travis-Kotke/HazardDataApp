@@ -19,6 +19,6 @@ public sealed class ReportRecord : BaseModel
     [Column("is_resolved")] public bool IsResolved { get; set; }
     [Column("date_resolved")] public DateTime? DateResolved { get; set; }
     [Column("resolution_notes")] public string ResolutionNotes { get; set; } = "";
-    [Column("published")] public bool Published { get; set; }
+    [Column("is_published")] public bool Published { get; set; }
     [Column("is_flagged")] public bool IsFlagged { get; set; }
 }

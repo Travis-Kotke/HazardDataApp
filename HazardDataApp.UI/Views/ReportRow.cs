@@ -11,7 +11,7 @@ public sealed class ReportRow(Report report, int index)
     public string StatusLabel => Report.IsResolved ? "Resolved" : "Unresolved";
     public string ResolutionAction => Report.IsResolved ? "Reopen" : "Resolve";
     public string FlagLabel => Report.IsFlagged ? "Unflag" : "Flag";
-    public Color FlagColor => Color.FromArgb(Report.IsFlagged ? "#A84420" : "#565663");
+    public Color FlagColor => Color.FromArgb(Report.IsFlagged ? "#FCE8DD" : "#EEEEF3");
     public Color SeverityColor => Color.FromArgb(Report.Severity switch
     {
         "High" => "#AC2525",

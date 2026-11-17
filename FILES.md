@@ -69,3 +69,4 @@ Homepage branch additions:
 - `HazardDataApp.BusinessLogic/Models/ReportFilter.cs`
 - `HazardDataApp.UI/Views/ReportRow.cs`
 - `sql/add_report_flag.sql`
+- `HazardDataApp.UI/Resources/Images/report_flag.svg`
