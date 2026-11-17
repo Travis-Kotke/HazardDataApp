@@ -6,6 +6,7 @@ Source files and copied assets added for the project skeleton (build outputs are
 - `HazardDataApp.BusinessLogic/DependencyInjection.cs`
 - `HazardDataApp.BusinessLogic/HazardDataApp.BusinessLogic.csproj`
 - `HazardDataApp.BusinessLogic/Models/Article.cs`
+- `HazardDataApp.BusinessLogic/Models/QuickStatsData.cs`
 - `HazardDataApp.BusinessLogic/Models/ReportStatistics.cs`
 - `HazardDataApp.BusinessLogic/Services/IReportService.cs`
 - `HazardDataApp.BusinessLogic/Services/ReportService.cs`
@@ -49,6 +50,7 @@ Source files and copied assets added for the project skeleton (build outputs are
 - `HazardDataApp.UI/Resources/Splash/splash.svg`
 - `HazardDataApp.UI/Resources/Styles/Colors.xaml`
 - `HazardDataApp.UI/Resources/Styles/Styles.xaml`
+- `HazardDataApp.UI/Services/DemoReportService.cs`
 - `HazardDataApp.UI/Views/AddArticlePage.xaml`
 - `HazardDataApp.UI/Views/AddArticlePage.xaml.cs`
 - `HazardDataApp.UI/Views/HomePage.xaml`
