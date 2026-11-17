@@ -13,11 +13,12 @@ public static class MauiProgram
         builder.UseMauiApp<App>();
         // UI registers business services; Database and Supabase stay behind that boundary.
         builder.Services.AddHazardBusinessLogic();
-        // DEMO ONLY: Remove this override to use the database-backed service.
-        builder.Services.AddSingleton<IReportService, DemoReportService>();
+        // Keep the Quick Stats demo local to that page; Home uses the real service.
+        builder.Services.AddSingleton<DemoReportService>();
         builder.Services.AddSingleton<HomePage>();
         builder.Services.AddSingleton<AddArticlePage>();
-        builder.Services.AddSingleton<QuickStatsPage>();
+        builder.Services.AddSingleton<QuickStatsPage>(services =>
+            new QuickStatsPage(services.GetRequiredService<DemoReportService>()));
         builder.Services.AddSingleton<AppShell>();
         return builder.Build();
     }
