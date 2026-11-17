@@ -1,13 +1,106 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="HazardDataApp.UI.Views.QuickStatsPage" Title="Quick Stats">
-    <VerticalStackLayout Padding="24" Spacing="12">
-        <Label Text="Report statistics" FontSize="24" />
-        <Label x:Name="StatusLabel" Text="Open this tab to load reports." />
-        <Label x:Name="TotalLabel" Text="Total: —" />
-        <Label x:Name="OpenLabel" Text="Open: —" />
-        <Label x:Name="ResolvedLabel" Text="Resolved: —" />
-        <Button x:Name="RefreshButton" Text="Refresh" Clicked="OnRefreshClicked" />
-    </VerticalStackLayout>
+             xmlns:views="clr-namespace:HazardDataApp.UI.Views"
+             x:Class="HazardDataApp.UI.Views.QuickStatsPage"
+             Title="Quick Stats"
+             BackgroundColor="#F3F6FA">
+    <Grid Padding="24,20" RowDefinitions="Auto,Auto,*" RowSpacing="16">
+        <Grid Grid.Row="0" ColumnDefinitions="*,Auto,Auto">
+            <Label Text="Summary News"
+                   FontSize="21"
+                   FontAttributes="Bold"
+                   TextColor="#172B4D"
+                   VerticalTextAlignment="Center" />
+            <Border Grid.Column="1"
+                    BackgroundColor="#DDF3F2"
+                    StrokeThickness="0"
+                    StrokeShape="RoundRectangle 8"
+                    Padding="9,5"
+                    VerticalOptions="Center">
+                <Label Text="DEMO DATA"
+                       FontSize="10"
+                       FontAttributes="Bold"
+                       TextColor="#087E8B" />
+            </Border>
+            <Label x:Name="StatusLabel"
+                   Grid.Column="2"
+                   IsVisible="False"
+                   FontSize="13"
+                   TextColor="#B42318"
+                   HorizontalOptions="End"
+                   VerticalTextAlignment="Center"
+                   Margin="12,0,0,0" />
+        </Grid>
+
+        <Border Grid.Row="1"
+                BackgroundColor="White"
+                Stroke="#E1E8F0"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 12"
+                Padding="16,14">
+            <VerticalStackLayout x:Name="SummaryNewsLayout" Spacing="9" />
+        </Border>
+
+        <Grid Grid.Row="2"
+              ColumnDefinitions="0.95*,1.4*"
+              ColumnSpacing="18">
+            <Border Grid.Column="0"
+                    BackgroundColor="White"
+                    Stroke="#E1E8F0"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 12"
+                    Padding="16">
+                <VerticalStackLayout Spacing="14">
+                    <Label Text="Recent Accidents"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           TextColor="#172B4D" />
+                    <CollectionView x:Name="RecentReportsList"
+                                    HeightRequest="300"
+                                    SelectionMode="None">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="views:RecentReportRow">
+                                <Border BackgroundColor="{Binding BackgroundColor}"
+                                        StrokeThickness="0"
+                                        StrokeShape="RoundRectangle 8"
+                                        Margin="0,2"
+                                        Padding="12,10">
+                                    <Label Text="{Binding Title}"
+                                           FontSize="15"
+                                           TextColor="#26364A"
+                                           VerticalTextAlignment="Center"
+                                           LineBreakMode="TailTruncation" />
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Border>
+
+            <Border Grid.Column="1"
+                    BackgroundColor="White"
+                    Stroke="#E1E8F0"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 12"
+                    Padding="16">
+                <Grid RowDefinitions="Auto,*,Auto">
+                    <Label Text="Accidents"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           TextColor="#172B4D" />
+                    <GraphicsView x:Name="TrendChart"
+                                  Grid.Row="1"
+                                  Drawable="{x:Null}"
+                                  Margin="4,12" />
+                    <Label Grid.Row="2"
+                           Text="Days Over time"
+                           FontSize="15"
+                           TextColor="#526579"
+                           HorizontalTextAlignment="Center"
+                           Margin="0,8,0,0" />
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
 </ContentPage>

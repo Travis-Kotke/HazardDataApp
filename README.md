@@ -1,7 +1,8 @@
 # HazardDataApp
 
-.NET 10 MAUI Android skeleton for the admin companion to the student safety app.
-Home and Add Article are placeholders. Quick Stats loads total, open and resolved counts.
+.NET 10 MAUI Android and Windows app for the admin companion to the student safety app.
+Home and Add Article are placeholders. Quick Stats shows summary news, recent
+incidents, and a seven-day report trend.
 See [FILES.md](FILES.md) for every created file, including copied platform files/assets.
 
 ```text
@@ -18,10 +19,12 @@ HazardDataApp.sln
        Supabase
 ```
 
-UI references only BusinessLogic. Database registration is composed through
-`AddHazardBusinessLogic()` in `MauiProgram.cs`. `IReportService` and
-`IReportRepository` allow replacement implementations. The singleton connection
-initializes one shared client asynchronously on its first read.
+UI references only BusinessLogic. Quick Stats currently uses `DemoReportService`
+to show sample data, marked by a `DEMO DATA` badge. In `MauiProgram.cs`, remove
+the demo `IReportService` override to use the database-backed implementation
+registered by `AddHazardBusinessLogic()`. `IReportService` and `IReportRepository`
+allow replacement implementations. When switching, also remove the `DEMO DATA`
+badge from `QuickStatsPage.xaml` and delete `UI/Services/DemoReportService.cs`.
 
 ## Supabase setup
 
@@ -30,8 +33,9 @@ initializes one shared client asynchronously on its first read.
 2. Set `Url` and `PublishableKey` to the existing project's URL and public
    publishable (`sb_publishable_...`) or legacy anon key. The real file is ignored
    by Git. Never put a service_role or secret key in this app.
-3. Without that file, the example is compiled so a clean checkout still builds;
-   Quick Stats displays a setup message instead of querying placeholders.
+3. Without that file, the example is compiled so a clean checkout still builds.
+   Quick Stats continues to show demo data until its demo service override is
+   removed.
 4. Use the existing `public.reports` schema. Counts include only rows visible to
    the current Supabase role through row level security (RLS). Authentication is
    outside this skeleton: if the existing policies require an authenticated admin,
@@ -42,36 +46,25 @@ The report timestamps are mapped as `DateTime` because the supplied schema says
 `timestamp`; nullable floor/date_resolved are preserved. Severity and floor remain
 strings matching the existing database values. No report write workflow is included.
 
-## Android build and run
+## Build and run
 
-Install the .NET 10 SDK, JDK 21, Android SDK (including the platform required by
-your .NET Android workload), and an Android emulator. Install the MAUI workload:
+Install the .NET 10 SDK and MAUI workloads for the platforms you plan to build:
 
 ```powershell
-dotnet workload install maui-android
 dotnet restore HazardDataApp.sln
+dotnet build HazardDataApp.UI/HazardDataApp.UI.csproj -f net10.0-windows10.0.19041.0
 dotnet build HazardDataApp.UI/HazardDataApp.UI.csproj -f net10.0-android
 ```
 
-Start an Android emulator in Android Device Manager, then run:
+The Android target requires the .NET Android workload, JDK, and Android SDK.
+Run from Visual Studio by selecting `Windows Machine` or an Android emulator.
 
-```powershell
-dotnet build HazardDataApp.UI/HazardDataApp.UI.csproj -t:Run -f net10.0-android
-```
+Home is Shell's first declared tab. Navigate using the tabs, or Shell routes
+`//main/home`, `//main/add-article`, and `//main/quick-stats`.
 
-Verification: the Android Debug build completed with zero warnings and zero
-errors, producing `com.hazarddataapp.admin-Signed.apk` under
-`HazardDataApp.UI/bin/Debug/net10.0-android/`. Live Supabase reads and emulator
-execution were not verified because backend credentials were not supplied.
-
-If SDK discovery fails, supply `-p:AndroidSdkDirectory="C:\path\to\Android\Sdk"`
-and `-p:JavaSdkDirectory="C:\path\to\jdk-21"`. Android API 24 is the minimum
-supported runtime. Home is Shell's first declared tab. Navigate using the tabs,
-or Shell routes `//main/home`, `//main/add-article`, `//main/quick-stats`.
-
-With configured credentials and permitted report reads, open Quick Stats and
-compare the counts to the table; Refresh repeats the read. A connection error is
-shown as an error, not as zero reports. No live backend credentials are included.
+Quick Stats currently shows sample reports and a generated seven-day trend.
+After configuring Supabase and removing the demo override, it will use
+permitted report reads instead. No live backend credentials are included.
 
 ## Proposed articles table
 
