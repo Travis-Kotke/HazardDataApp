@@ -62,3 +62,11 @@ Source files and copied assets added for the project skeleton (build outputs are
 - `FILES.md`
 
 Existing file updated: `README.md`. Original root platform and resource files were preserved.
+
+Homepage branch additions:
+
+- `HazardDataApp.BusinessLogic/Models/Report.cs`
+- `HazardDataApp.BusinessLogic/Models/ReportFilter.cs`
+- `HazardDataApp.UI/Views/ReportRow.cs`
+- `sql/add_report_flag.sql`
+- `HazardDataApp.UI/Resources/Images/report_flag.svg`

@@ -4,6 +4,18 @@ namespace HazardDataApp.Database.Repositories;
 
 internal sealed class ReportRepository(SupabaseConnection connection) : IReportRepository
 {
+    public async Task<ReportRecord> SetFlaggedAsync(int id, bool isFlagged)
+    {
+        var client = await connection.GetClientAsync();
+        // Patch only this field on this report, preserving unrelated edits.
+        var response = await client.From<ReportRecord>()
+            .Where(report => report.Id == id)
+            .Set(report => report.IsFlagged, isFlagged)
+            .Update();
+        return response.Models.SingleOrDefault()
+            ?? throw new InvalidOperationException("The report could not be updated. It may have been removed, or your account may not have permission.");
+    }
+
     public async Task<IReadOnlyList<ReportRecord>> GetAllAsync()
     {
         var client = await connection.GetClientAsync();

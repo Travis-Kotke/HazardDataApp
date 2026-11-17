@@ -3,9 +3,15 @@ using HazardDataApp.BusinessLogic.Services;
 
 namespace HazardDataApp.UI.Services;
 
-internal sealed class DemoReportService : IReportService
+internal sealed class DemoReportService(IReportService reportService) : IReportService
 {
     private static readonly QuickStatsData demoData = CreateDemoData();
+
+    // Only statistics are demo data; report reads/writes retain the real implementation.
+    public Task<IReadOnlyList<Report>> GetReportsAsync() => reportService.GetReportsAsync();
+
+    public Task<Report> SetFlaggedAsync(int id, bool isFlagged) =>
+        reportService.SetFlaggedAsync(id, isFlagged);
 
     public Task<ReportStatistics> GetStatisticsAsync() =>
         Task.FromResult(demoData.Statistics);
