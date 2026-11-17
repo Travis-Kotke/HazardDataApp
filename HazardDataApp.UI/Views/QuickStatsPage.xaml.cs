@@ -96,6 +96,11 @@ public partial class QuickStatsPage : ContentPage
         StatusLabel.IsVisible = true;
     }
 
+    private async void OnExportClicked(object sender, EventArgs e)
+    {
+        await DisplayActionSheet("Choose an export format", "Cancel", null, "CSV", "Excel");
+    }
+
     private sealed class ReportTrendDrawable : IDrawable
     {
         private IReadOnlyList<DailyReportCount> dailyCounts = Array.Empty<DailyReportCount>();
