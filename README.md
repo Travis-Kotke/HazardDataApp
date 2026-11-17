@@ -1,7 +1,8 @@
 # HazardDataApp
 
 .NET 10 MAUI Android skeleton for the admin companion to the student safety app.
-Home and Add Article are placeholders. Quick Stats loads total, open and resolved counts.
+Home lists and filters reports. Add Article is a placeholder. Quick Stats loads total,
+open and resolved counts.
 See [FILES.md](FILES.md) for every created file, including copied platform files/assets.
 
 ```text
@@ -72,6 +73,37 @@ or Shell routes `//main/home`, `//main/add-article`, `//main/quick-stats`.
 With configured credentials and permitted report reads, open Quick Stats and
 compare the counts to the table; Refresh repeats the read. A connection error is
 shown as an error, not as zero reports. No live backend credentials are included.
+
+## Homepage work (`feature/homepage`)
+
+Windows desktop preview is also supported. Install the Windows workload and run
+the unpackaged app (no MSIX signing needed):
+
+```powershell
+dotnet workload install maui-windows
+dotnet build HazardDataApp.UI/HazardDataApp.UI.csproj -t:Run -f net10.0-windows10.0.19041.0
+```
+
+The homepage follows the team's table-and-filter sketch. It loads reports through
+`IReportService`, supports incident-title search, optional inclusive date ranges,
+severity, resolved status, and public-only filtering (`published`). Reports sort
+newest first. Clear filters restores all loaded reports; Refresh reloads Supabase.
+The filter panel moves above the horizontally scrollable table on small screens.
+
+Flag/Unflag marks a suspicious report without resolving it. Before using this
+action, run `sql/add_report_flag.sql` to add `is_flagged boolean not null default
+false`. This assumes the team-confirmed `published boolean` column already exists.
+Existing admin SELECT/UPDATE policies must allow the action. Failed writes leave
+the displayed report unchanged; the app does not change policies or run SQL.
+
+Type filtering is disabled pending confirmation of the new column and category
+values. Resolve/Reopen buttons are disabled pending confirmation of how the team
+wants `date_resolved` handled. Resolved-status filtering already works.
+
+Validation: the Android build passed with zero warnings/errors. Eight temporary
+filter checks passed for ordering, title matching, inclusive dates, combined
+filters, unresolved status, empty results, and invalid dates. Live reads/writes
+and emulator layout testing still require backend setup/device testing.
 
 ## Proposed articles table
 

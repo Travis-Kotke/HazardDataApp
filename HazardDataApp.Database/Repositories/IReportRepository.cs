@@ -5,4 +5,5 @@ namespace HazardDataApp.Database.Repositories;
 public interface IReportRepository
 {
     Task<IReadOnlyList<ReportRecord>> GetAllAsync();
+    Task<ReportRecord> SetFlaggedAsync(int id, bool isFlagged);
 }
