@@ -70,3 +70,4 @@ Homepage branch additions:
 - `HazardDataApp.UI/Views/ReportRow.cs`
 - `sql/add_report_flag.sql`
 - `HazardDataApp.UI/Resources/Images/report_flag.svg`
+- `HazardDataApp.Database/SupabaseConfig.defaults.cs`
