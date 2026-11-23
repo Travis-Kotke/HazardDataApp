@@ -1,5 +1,6 @@
 using HazardDataApp.BusinessLogic.Models;
 using HazardDataApp.BusinessLogic.Services;
+using Microsoft.Maui.ApplicationModel.DataTransfer;
 
 namespace HazardDataApp.UI.Views;
 
@@ -7,6 +8,8 @@ public partial class HomePage : ContentPage
 {
     private readonly IReportService reportService;
     private IReadOnlyList<Report> reports = [];
+    private List<ReportRow> visibleRows = [];
+    private ReportRow? selectionAnchor;
     private bool ready;
     private bool busy;
     private bool loaded;
@@ -35,7 +38,35 @@ public partial class HomePage : ContentPage
 
     private async void OnExportClicked(object? sender, EventArgs e)
     {
-        await DisplayActionSheetAsync("Choose an export format", "Cancel", null, "CSV", "Excel");
+        var selectedReports = visibleRows
+            .Where(row => row.IsSelected)
+            .Select(row => row.Report)
+            .ToList();
+        if (selectedReports.Count == 0)
+        {
+            StatusLabel.Text = "Select one or more table rows before exporting.";
+            return;
+        }
+
+        var format = await DisplayActionSheetAsync("Choose an export format", "Cancel", null, "CSV (.csv)", "Excel (.xlsx)");
+        if (format is not ("CSV (.csv)" or "Excel (.xlsx)")) return;
+
+        try
+        {
+            var filePath = format == "CSV (.csv)"
+                ? await ReportExporter.ExportCsvAsync(selectedReports)
+                : await ReportExporter.ExportExcelAsync(selectedReports);
+            await Share.Default.RequestAsync(new ShareFileRequest
+            {
+                Title = $"Hazard reports ({selectedReports.Count})",
+                File = new ShareFile(filePath)
+            });
+            StatusLabel.Text = $"Exported {selectedReports.Count} selected report(s).";
+        }
+        catch (Exception ex)
+        {
+            StatusLabel.Text = $"Export failed: {ex.Message}";
+        }
     }
 
     private async Task LoadAsync()
@@ -101,21 +132,66 @@ public partial class HomePage : ContentPage
                 ToDate = UseDateRange.IsToggled ? ToDatePicker.Date : null
             };
             var filtered = filter.Apply(reports);
-            ReportsList.ItemsSource = filtered.Select((report, index) => new ReportRow(report, index)).ToList();
+            visibleRows = filtered.Select((report, index) => new ReportRow(report, index)).ToList();
+            selectionAnchor = null;
+            ReportsList.ItemsSource = visibleRows;
             ResultsLabel.Text = $"Hazard reports ({filtered.Count} of {reports.Count})";
             EmptyLabel.Text = reports.Count == 0
                 ? "No reports are available to your account yet."
                 : "No matching reports. Try changing or clearing your filters.";
-            StatusLabel.Text = "Newest reports first. Scroll across the table for actions on smaller screens.";
+            StatusLabel.Text = "Click rows to select or clear them. Shift-click another row to select a range.";
         }
         catch (ArgumentException ex)
         {
+            visibleRows = [];
+            selectionAnchor = null;
             ReportsList.ItemsSource = Array.Empty<ReportRow>();
             ResultsLabel.Text = "Invalid date range";
             EmptyLabel.Text = ex.Message;
             StatusLabel.Text = ex.Message;
         }
     }
+
+    private void OnReportSelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        if (e.CurrentSelection.FirstOrDefault() is not ReportRow row) return;
+
+        var shiftPressed = IsShiftPressed();
+        var rowIndex = visibleRows.IndexOf(row);
+        var anchorIndex = selectionAnchor is null ? -1 : visibleRows.IndexOf(selectionAnchor);
+        if (rowIndex < 0) return;
+
+        if (shiftPressed && anchorIndex >= 0 && rowIndex >= 0)
+        {
+            var first = Math.Min(anchorIndex, rowIndex);
+            var last = Math.Max(anchorIndex, rowIndex);
+            for (var index = 0; index < visibleRows.Count; index++)
+                visibleRows[index].IsSelected = index >= first && index <= last;
+        }
+        else
+        {
+            row.IsSelected = !row.IsSelected;
+            selectionAnchor = row;
+        }
+
+        var selectedCount = visibleRows.Count(visibleRow => visibleRow.IsSelected);
+        StatusLabel.Text = $"{selectedCount} report(s) selected. Shift-click another row to select a range.";
+        ReportsList.SelectedItem = null;
+    }
+
+    private static bool IsShiftPressed()
+    {
+#if WINDOWS
+        return (GetAsyncKeyState(0x10) & 0x8000) != 0;
+#else
+        return false;
+#endif
+    }
+
+#if WINDOWS
+    [System.Runtime.InteropServices.DllImport("user32.dll")]
+    private static extern short GetAsyncKeyState(int virtualKey);
+#endif
 
     private async void OnFlagClicked(object? sender, EventArgs e)
     {
