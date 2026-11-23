@@ -104,6 +104,7 @@
         </Grid>
 
         <Button Grid.Row="3"
+                x:Name="ExportButton"
                 Text="Export"
                 Background="#087E8B"
                 TextColor="White"
