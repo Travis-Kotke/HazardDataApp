@@ -1,0 +1,6 @@
+Supervised AI implementation of AI export feature on quickstats and Home page.
+Spent alot of my timedirecting AI the path i wanted it to use to export and then testing each change
+by launching it in my emulator and enviroment to collect debug info for the bugs and problems the AI was running into.
+When the AI went off the trail or was doing something wrong with its code i redirected it to folloow my specifications.
+Alot of problems with the AI not understanding the existing UI framework of the screen and messing the UI up
+Had to manually trim some UI the AI kept putting in that interfered with other UI objects.
