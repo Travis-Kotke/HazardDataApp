@@ -4,7 +4,7 @@ namespace HazardDataApp.UI;
 
 public partial class AppShell : Shell
 {
-    public AppShell(HomePage home, AddArticlePage article, QuickStatsPage stats)
+    public AppShell(HomePage home, ArticlePage article, StatsPage stats)
     {
         InitializeComponent();
         HomeContent.Content = home;
