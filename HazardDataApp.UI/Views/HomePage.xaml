@@ -122,7 +122,8 @@
                                 <Label Grid.Column="2" Text="Public?" FontAttributes="Bold" TextColor="#24242B" />
                                 <Label Grid.Column="3" Text="Actions" FontAttributes="Bold" TextColor="#24242B" />
                             </Grid>
-                            <CollectionView Grid.Row="1" x:Name="ReportsList" SelectionMode="None">
+                            <CollectionView Grid.Row="1" x:Name="ReportsList" SelectionMode="Single"
+                                            SelectionChanged="OnReportSelectionChanged">
                                 <CollectionView.EmptyView>
                                     <Label x:Name="EmptyLabel" Text="No reports loaded." Padding="24" TextColor="#555560" />
                                 </CollectionView.EmptyView>

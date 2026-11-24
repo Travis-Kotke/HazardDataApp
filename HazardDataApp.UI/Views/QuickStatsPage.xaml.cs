@@ -1,8 +1,10 @@
 using System.Collections.ObjectModel;
 using HazardDataApp.BusinessLogic.Models;
 using HazardDataApp.BusinessLogic.Services;
+using Microsoft.Maui.ApplicationModel.DataTransfer;
 using Microsoft.Maui.Controls.Shapes;
 using Microsoft.Maui.Graphics;
+using Microsoft.Maui.Media;
 
 namespace HazardDataApp.UI.Views;
 
@@ -13,6 +15,7 @@ public partial class QuickStatsPage : ContentPage
     private readonly IReportService reportService;
     private readonly ObservableCollection<RecentReportRow> recentReports = new();
     private bool loading;
+    private bool exporting;
 
     public QuickStatsPage(IReportService reportService)
     {
@@ -96,9 +99,51 @@ public partial class QuickStatsPage : ContentPage
         StatusLabel.IsVisible = true;
     }
 
-    private async void OnExportClicked(object sender, EventArgs e)
+    private async void OnExportClicked(object? sender, EventArgs e)
     {
-        await DisplayActionSheet("Choose an export format", "Cancel", null, "CSV", "Excel");
+        if (exporting) return;
+        if (!Screenshot.Default.IsCaptureSupported)
+        {
+            ShowError("Screenshot capture isn't supported on this device.");
+            return;
+        }
+
+        exporting = true;
+        var exportButtonWasVisible = ExportButton.IsVisible;
+        var exportButtonWasEnabled = ExportButton.IsEnabled;
+        var tabBarWasVisible = Shell.GetTabBarIsVisible(this);
+        try
+        {
+            ExportButton.IsEnabled = false;
+            ExportButton.IsVisible = false;
+            Shell.SetTabBarIsVisible(this, false);
+            await Task.Delay(100);
+
+            var screenshot = await Screenshot.Default.CaptureAsync();
+            var filePath = System.IO.Path.Combine(
+                FileSystem.CacheDirectory,
+                $"quick-stats-{DateTime.UtcNow:yyyyMMdd-HHmmssfff}.png");
+            using (var source = await screenshot.OpenReadAsync())
+            using (var destination = File.Create(filePath))
+                await source.CopyToAsync(destination);
+
+            await Share.Default.RequestAsync(new ShareFileRequest
+            {
+                Title = "Quick Stats screenshot",
+                File = new ShareFile(filePath)
+            });
+        }
+        catch (Exception ex)
+        {
+            ShowError($"Screenshot export failed: {ex.Message}");
+        }
+        finally
+        {
+            ExportButton.IsVisible = exportButtonWasVisible;
+            ExportButton.IsEnabled = exportButtonWasEnabled;
+            Shell.SetTabBarIsVisible(this, tabBarWasVisible);
+            exporting = false;
+        }
     }
 
     private sealed class ReportTrendDrawable : IDrawable
