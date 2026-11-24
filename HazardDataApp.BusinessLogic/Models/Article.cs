@@ -1,17 +1,11 @@
-
 namespace HazardDataApp.BusinessLogic.Models;
 
+// Proposed article model only; no article persistence until the table is approved.
 public sealed class Article
 {
-    public long Id { get; set; }
-
+    public int Id { get; set; }
     public string Title { get; set; } = "";
-
     public string Body { get; set; } = "";
-
-    public bool IsPublished { get; set; }
-
-    public DateTimeOffset CreatedAt { get; set; }
-
-    public string RowColor { get; set; } = "#FFFFFF";
+    public string Author { get; set; } = "";
+    public DateTimeOffset DatePublished { get; set; }
 }

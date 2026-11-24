@@ -1,8 +1,0 @@
-Travis Kotke
-For this lab, I worked on connecting the article database to the project and some cosmetic changes like
-renaming some of the files to fit feedback we got during the lab.  I did the renaming and cosmetic things
-on my own since that was a simple enough fix. For the database connection, I used chatpgt to help with that
-I gave it the variables that would be within the table and looked over and used the subsequent code that it
-gave to me for connecting the database and adding functionality to some of the buttons on the article page.
-Primary use of the AI has been for errors and troubleshooting, chatgpt is very efficient at telling me why
-I'm getting several random errors when building the project. This lab error 9009 was my arch nemesis.
