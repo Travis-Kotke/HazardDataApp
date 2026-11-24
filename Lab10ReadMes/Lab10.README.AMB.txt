@@ -1,0 +1,21 @@
+Alex Bohn
+I Supervised the AI's implementation of the database integration of the
+Quick Stats page.  I first laid out a specific prompt making sure the AI
+would adhere to the assignment standards.  I also emphasized the importance
+of keeping files modified to a necessary minimum to avoid merge conflicts.  As the 
+previous version of the page contained only placeholder data, I had to supervise
+the entire implementation of the logic behind gathering recent reports from
+the database, generating summary news, and the creation of the graph.  The 
+recent reports section was simplistic and I even made it incorporate a popup
+window of the details of the recent report that was clicked.  I would check
+the AI's work by running the build and looking for flaws or things I wanted
+to change.  I learned from last lab that the lengthier and more detailed the
+prompts are the better the results.  The only issues I had was mainly with
+the graph as the labels were misaligned or set weirdly but i also added a 
+dropdown menu of different time intervals that turned out to be buggy so I
+had it make a custom one that took a while to get just right. The summary
+news also turned out to be slightly troublesome as I found the AI couldn't 
+summarize the data in general phrases as we had intially planned so I had 
+to pivot to general summarized details such as location with most hazards, 
+most hazardous day, etc. Overall most of the major work was completed in a 
+couple prompts but the rest had to be somewhat meticulously fine tuned.
