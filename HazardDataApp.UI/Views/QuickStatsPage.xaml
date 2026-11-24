@@ -6,25 +6,14 @@
              Title="Quick Stats"
              BackgroundColor="#F3F6FA">
     <Grid Padding="24,20" RowDefinitions="Auto,Auto,*,Auto" RowSpacing="16">
-        <Grid Grid.Row="0" ColumnDefinitions="*,Auto,Auto">
+        <Grid Grid.Row="0" ColumnDefinitions="*,Auto">
             <Label Text="Summary News"
                    FontSize="21"
                    FontAttributes="Bold"
                    TextColor="#172B4D"
                    VerticalTextAlignment="Center" />
-            <Border Grid.Column="1"
-                    BackgroundColor="#DDF3F2"
-                    StrokeThickness="0"
-                    StrokeShape="RoundRectangle 8"
-                    Padding="9,5"
-                    VerticalOptions="Center">
-                <Label Text="DEMO DATA"
-                       FontSize="10"
-                       FontAttributes="Bold"
-                       TextColor="#087E8B" />
-            </Border>
             <Label x:Name="StatusLabel"
-                   Grid.Column="2"
+                   Grid.Column="1"
                    IsVisible="False"
                    FontSize="13"
                    TextColor="#B42318"
@@ -38,12 +27,17 @@
                 Stroke="#E1E8F0"
                 StrokeThickness="1"
                 StrokeShape="RoundRectangle 12"
-                Padding="16,14">
-            <VerticalStackLayout x:Name="SummaryNewsLayout" Spacing="9" />
+                Padding="16,10"
+                HeightRequest="144">
+            <ScrollView Orientation="Vertical"
+                        VerticalScrollBarVisibility="Always">
+                <VerticalStackLayout x:Name="SummaryNewsLayout" Spacing="7" />
+            </ScrollView>
         </Border>
 
         <Grid Grid.Row="2"
               ColumnDefinitions="0.95*,1.4*"
+              RowDefinitions="*"
               ColumnSpacing="18">
             <Border Grid.Column="0"
                     BackgroundColor="White"
@@ -51,14 +45,15 @@
                     StrokeThickness="1"
                     StrokeShape="RoundRectangle 12"
                     Padding="16">
-                <VerticalStackLayout Spacing="14">
+                <Grid RowDefinitions="Auto,*" RowSpacing="14">
                     <Label Text="Recent Accidents"
                            FontSize="20"
                            FontAttributes="Bold"
                            TextColor="#172B4D" />
                     <CollectionView x:Name="RecentReportsList"
-                                    HeightRequest="300"
-                                    SelectionMode="None">
+                                    Grid.Row="1"
+                                    SelectionMode="Single"
+                                    SelectionChanged="OnRecentAccidentSelected">
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="views:RecentReportRow">
                                 <Border BackgroundColor="{Binding BackgroundColor}"
@@ -66,16 +61,25 @@
                                         StrokeShape="RoundRectangle 8"
                                         Margin="0,2"
                                         Padding="12,10">
-                                    <Label Text="{Binding Title}"
-                                           FontSize="15"
-                                           TextColor="#26364A"
-                                           VerticalTextAlignment="Center"
-                                           LineBreakMode="TailTruncation" />
+                                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                                        <Label Text="{Binding Title}"
+                                               FontSize="15"
+                                               TextColor="#26364A"
+                                               VerticalTextAlignment="Center"
+                                               LineBreakMode="TailTruncation" />
+                                        <Label Grid.Column="1"
+                                               Text="{Binding RelativeTime}"
+                                               FontSize="12"
+                                               TextColor="#66788A"
+                                               VerticalTextAlignment="Center"
+                                               HorizontalTextAlignment="End"
+                                               LineBreakMode="NoWrap" />
+                                    </Grid>
                                 </Border>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>
-                </VerticalStackLayout>
+                </Grid>
             </Border>
 
             <Border Grid.Column="1"
@@ -84,17 +88,102 @@
                     StrokeThickness="1"
                     StrokeShape="RoundRectangle 12"
                     Padding="16">
-                <Grid RowDefinitions="Auto,*,Auto">
+                <Grid RowDefinitions="Auto,*,Auto" ColumnDefinitions="Auto,*">
+                    <Grid Grid.ColumnSpan="2"
+                          ColumnDefinitions="*,Auto"
+                          Margin="0,0,0,8">
+                        <Label Text="Accident Trends"
+                               FontSize="20"
+                               FontAttributes="Bold"
+                               TextColor="#172B4D"
+                               VerticalTextAlignment="Center" />
+                        <AbsoluteLayout Grid.Column="1"
+                                        WidthRequest="160"
+                                        HeightRequest="38"
+                                        HorizontalOptions="End"
+                                        VerticalOptions="Center"
+                                        ZIndex="10">
+                            <Border x:Name="TimeSpanToggle"
+                                    BackgroundColor="#F3F7FB"
+                                    Stroke="#CBD6E2"
+                                    StrokeThickness="1"
+                                    StrokeShape="RoundRectangle 8"
+                                    Padding="8,0,6,0"
+                                    AbsoluteLayout.LayoutBounds="0,0,160,38"
+                                    AbsoluteLayout.LayoutFlags="None">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnTimeSpanToggleTapped" />
+                                </Border.GestureRecognizers>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <Label x:Name="SelectedTimeSpanLabel"
+                                           Text="All Time"
+                                           FontSize="14"
+                                           FontAttributes="Bold"
+                                           TextColor="#172B4D"
+                                           VerticalTextAlignment="Center" />
+                                    <Label x:Name="TimeSpanChevron"
+                                           Grid.Column="1"
+                                           Text="⌄"
+                                           FontSize="16"
+                                           FontAttributes="Bold"
+                                           TextColor="#526579"
+                                           VerticalTextAlignment="Center"
+                                           Margin="4,0,0,2" />
+                                </Grid>
+                            </Border>
+                        </AbsoluteLayout>
+                    </Grid>
                     <Label Text="Accidents"
-                           FontSize="20"
-                           FontAttributes="Bold"
-                           TextColor="#172B4D" />
+                           FontSize="13"
+                           TextColor="#526579"
+                           Grid.Row="1"
+                           Grid.Column="0"
+                           VerticalTextAlignment="Center"
+                           Rotation="-90"
+                           Margin="0,0,-10,0" />
                     <GraphicsView x:Name="TrendChart"
                                   Grid.Row="1"
+                                  Grid.Column="1"
                                   Drawable="{x:Null}"
                                   Margin="4,12" />
+                    <AbsoluteLayout x:Name="ChartOverlay"
+                                    Grid.RowSpan="3"
+                                    Grid.ColumnSpan="2"
+                                    InputTransparent="True"
+                                    CascadeInputTransparent="False"
+                                    ZIndex="20">
+                        <Border x:Name="TimeSpanOptionsPanel"
+                                WidthRequest="160"
+                                HeightRequest="228"
+                                IsVisible="False"
+                                InputTransparent="False"
+                                BackgroundColor="Transparent"
+                                Stroke="#CBD6E2"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 8"
+                                Padding="4"
+                                AbsoluteLayout.LayoutBounds="0,42,160,228"
+                                AbsoluteLayout.LayoutFlags="None">
+                            <Grid>
+                                <Border BackgroundColor="White"
+                                        Opacity="0.9"
+                                        StrokeThickness="0"
+                                        StrokeShape="RoundRectangle 7"
+                                        InputTransparent="True" />
+                                <ScrollView HeightRequest="220"
+                                            VerticalOptions="Fill"
+                                            BackgroundColor="Transparent"
+                                            Orientation="Vertical"
+                                            VerticalScrollBarVisibility="Always"
+                                            HorizontalScrollBarVisibility="Never">
+                                    <VerticalStackLayout x:Name="TimeSpanOptionsLayout" Spacing="2" />
+                                </ScrollView>
+                            </Grid>
+                        </Border>
+                    </AbsoluteLayout>
                     <Label Grid.Row="2"
-                           Text="Days Over time"
+                           Grid.ColumnSpan="2"
+                           Text="Days Over Time"
                            FontSize="15"
                            TextColor="#526579"
                            HorizontalTextAlignment="Center"
