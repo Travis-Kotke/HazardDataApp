@@ -22,3 +22,22 @@ public sealed class ReportRecord : BaseModel
     [Column("is_published")] public bool Published { get; set; }
     [Column("is_flagged")] public bool IsFlagged { get; set; }
 }
+
+[Table("articles")]
+public sealed class ArticleRecord : BaseModel
+{
+    [PrimaryKey("id", false)]
+    public long Id { get; set; }
+
+    [Column("title")]
+    public string Title { get; set; } = "";
+
+    [Column("body")]
+    public string Body { get; set; } = "";
+
+    [Column("is_published")]
+    public bool IsPublished { get; set; }
+
+    [Column("created_at")]
+    public DateTimeOffset CreatedAt { get; set; }
+}
