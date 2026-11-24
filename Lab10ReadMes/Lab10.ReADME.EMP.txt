@@ -1,5 +1,0 @@
-This sprint, I focused on refining the user interface for our AI hazards app. 
-After previously building the homepage, connecting it to the database, and adding the filter functionality, 
-I fixed the UI so that all intended buttons rendered properly. I also made sure that the front end stayed connected to the 
-database so that the app continues to display up-to-date hazard information. This work improved both usability and reliability 
-while preparing the interface for future feature work.
