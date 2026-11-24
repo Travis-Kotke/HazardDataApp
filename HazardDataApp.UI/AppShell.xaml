@@ -5,7 +5,7 @@
     <!-- Shell starts with the first declared item, Home. Routes are registered here. -->
     <TabBar Route="main">
         <ShellContent x:Name="HomeContent" Title="Home" Route="home" />
-        <ShellContent x:Name="ArticleContent" Title="Add Article" Route="add-article" />
-        <ShellContent x:Name="StatsContent" Title="Quick Stats" Route="quick-stats" />
+        <ShellContent x:Name="ArticleContent" Title="Article" Route="article" />
+        <ShellContent x:Name="StatsContent" Title="Stats" Route="stats" />
     </TabBar>
 </Shell>

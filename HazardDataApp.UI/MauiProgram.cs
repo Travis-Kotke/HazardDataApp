@@ -20,8 +20,8 @@ public static class MauiProgram
         // UI registers business services; Database and Supabase stay behind that boundary.
         builder.Services.AddHazardBusinessLogic();
         builder.Services.AddSingleton<HomePage>();
-        builder.Services.AddSingleton<AddArticlePage>();
-        builder.Services.AddSingleton<QuickStatsPage>();
+        builder.Services.AddSingleton<ArticlePage>();
+        builder.Services.AddSingleton<StatsPage>();
         builder.Services.AddSingleton<AppShell>();
         return builder.Build();
     }
