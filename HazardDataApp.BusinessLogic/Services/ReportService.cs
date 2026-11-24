@@ -195,4 +195,58 @@ internal sealed class ReportService(IReportRepository repository) : IReportServi
         2 => $"{items[0]} and {items[1]}",
         _ => $"{string.Join(", ", items.Take(items.Count - 1))}, and {items[^1]}"
     };
+
+    public async Task<IReadOnlyList<Article>> GetArticlesAsync()
+    {
+        var records = await repository.GetArticlesAsync();
+
+        return records.Select(MapArticle).ToList();
+    }
+
+    public async Task<Article> AddArticleAsync(
+        string title, string body)
+    {
+        if (string.IsNullOrWhiteSpace(title))
+            throw new ArgumentException("Article title is required.");
+
+        if (string.IsNullOrWhiteSpace(body))
+            throw new ArgumentException("Article body is required.");
+
+        var record = await repository.AddArticleAsync(
+            title.Trim(), body.Trim());
+
+        return MapArticle(record);
+    }
+
+    public async Task<Article> SetArticlePublishedAsync(long id, bool isPublished)
+    {
+        if (id <= 0)
+            throw new ArgumentException("Invalid article ID.");
+
+        var record = await repository.SetArticlePublishedAsync(
+            id, isPublished);
+
+        return MapArticle(record);
+    }
+
+    public Task DeleteArticleAsync(long id)
+    {
+        if (id <= 0)
+            throw new ArgumentException("Invalid article ID.");
+
+        return repository.DeleteArticleAsync(id);
+    }
+
+    private static Article MapArticle(HazardDataApp.Database.Models.ArticleRecord record)
+    {
+        return new Article
+        {
+            Id = record.Id,
+            Title = record.Title,
+            Body = record.Body,
+            IsPublished = record.IsPublished,
+            CreatedAt = record.CreatedAt
+        };
+    }
+
 }
